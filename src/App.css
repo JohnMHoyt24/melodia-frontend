@@ -599,9 +599,28 @@
   width: 100%;
 }
 
+/* Compact so the content below (prompt box, library list) shows without scrolling. */
+#chat-main .hero,
+#library .hero {
+  --fs-display: clamp(2rem, 1.1rem + 3vw, 3.25rem);
+}
+
 #chat-main .hero {
   text-align: center;
-  padding-top: var(--space-8);
+  padding-top: var(--space-5);
+}
+
+#chat-main .hero .hero-equalizer {
+  --eq-height: 22px;
+  margin: var(--space-4) 0 0;
+}
+
+#chat-main .hero .prompt-pills {
+  margin-top: var(--space-4);
+}
+
+#chat-main .hero + #prompt-form {
+  margin-top: var(--space-5);
 }
 
 .message-list {
