@@ -58,6 +58,7 @@ export function LibraryPage() {
               id={artist.id}
               name={artist.name}
               genres={artist.genres}
+              coverUrl={artist.cover_url}
               meta={`Added ${new Date(artist.added_at).toLocaleDateString()}`}
               actions={
                 <Button

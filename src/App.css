@@ -191,7 +191,26 @@
 }
 
 .album {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  align-items: start;
+  gap: var(--space-5);
   padding: var(--space-5);
+
+  @media (max-width: 520px) {
+    grid-template-columns: 80px 1fr;
+    gap: var(--space-4);
+  }
+}
+
+.album-cover {
+  width: 100%;
+  font-size: 2rem;
+  box-shadow: var(--shadow-2);
+}
+
+.album-body {
+  min-width: 0;
 }
 
 .album h2 {
@@ -809,6 +828,7 @@
 }
 
 .artist-hero-art {
+  display: inline-flex;
   width: clamp(120px, 24vw, 168px);
   aspect-ratio: 1;
   border-radius: var(--radius-lg);

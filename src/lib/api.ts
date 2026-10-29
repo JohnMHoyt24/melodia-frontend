@@ -49,9 +49,13 @@ export interface Track {
   length_ms: number | null;
 }
 
+// cover_url fields point at the Cover Art Archive, which 404s for releases without art;
+// render them through <CoverArt>, which falls back to generated art.
 export interface Album {
   id: string;
   title: string;
+  musicbrainz_id: string | null;
+  cover_url: string | null;
   primary_type: string | null;
   first_release_date: string | null;
   tracks: Track[];
@@ -62,12 +66,14 @@ export interface ArtistDetail extends Artist {
   albums: Album[];
   // Null until the artist has been analyzed (see analyzeArtist).
   characteristics: Record<string, number> | null;
+  cover_url: string | null;
 }
 
 export interface SimilarArtist {
   id: string;
   name: string;
   similarity: number;
+  cover_url: string | null;
 }
 
 export interface LibraryArtist {
@@ -76,6 +82,7 @@ export interface LibraryArtist {
   genres: string[];
   characteristics: Record<string, number> | null;
   added_at: string;
+  cover_url: string | null;
 }
 
 export interface AnalysisStatus {
@@ -88,12 +95,14 @@ export interface RecommendedArtist {
   name: string;
   genres: string[];
   reason: string;
+  cover_url: string | null;
 }
 
 export interface ChatSource {
   id: string;
   name: string;
   similarity: number;
+  cover_url: string | null;
 }
 
 export interface ChatMessage {

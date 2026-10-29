@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { CharacteristicBars } from "../components/CharacteristicBars";
 import { Button } from "../components/ui/Button";
 import { DisplayHeading } from "../components/ui/DisplayHeading";
-import { GeneratedArt } from "../components/ui/GeneratedArt";
+import { CoverArt } from "../components/ui/CoverArt";
 import { TagList } from "../components/ui/TagList";
 import { LibraryButton } from "../components/LibraryButton";
 import { SimilarArtists } from "../components/SimilarArtists";
@@ -149,7 +149,7 @@ export function ArtistPage() {
     <section id="artist">
       {backLink}
       <div className="hero artist-hero">
-        <GeneratedArt name={artist.name} className="artist-hero-art" />
+        <CoverArt name={artist.name} src={artist.cover_url} className="artist-hero-art" />
         <DisplayHeading eyebrow={genreNames[0]}>{artist.name}</DisplayHeading>
         <TagList tags={genreNames} />
         {library.signedIn && (
@@ -203,26 +203,29 @@ export function ArtistPage() {
         <div className="albums">
           {artist.albums.map((album) => (
             <div key={album.id} className="album card">
-              <h2>
-                {album.title}
-                {album.first_release_date && (
-                  <span className="album-year">
-                    {" "}
-                    {album.first_release_date.slice(0, 4)}
-                  </span>
+              <CoverArt name={album.title} src={album.cover_url} className="album-cover" />
+              <div className="album-body">
+                <h2>
+                  {album.title}
+                  {album.first_release_date && (
+                    <span className="album-year">
+                      {" "}
+                      {album.first_release_date.slice(0, 4)}
+                    </span>
+                  )}
+                </h2>
+                {album.tracks.length > 0 ? (
+                  <ol className="tracklist">
+                    {album.tracks.map((track) => (
+                      <li key={track.id}>{track.title}</li>
+                    ))}
+                  </ol>
+                ) : tracksLoadedFor.has(album.id) ? (
+                  <p className="feedback">No tracklist found for this album.</p>
+                ) : (
+                  <p className="feedback">Loading tracklist...</p>
                 )}
-              </h2>
-              {album.tracks.length > 0 ? (
-                <ol className="tracklist">
-                  {album.tracks.map((track) => (
-                    <li key={track.id}>{track.title}</li>
-                  ))}
-                </ol>
-              ) : tracksLoadedFor.has(album.id) ? (
-                <p className="feedback">No tracklist found for this album.</p>
-              ) : (
-                <p className="feedback">Loading tracklist...</p>
-              )}
+              </div>
             </div>
           ))}
         </div>

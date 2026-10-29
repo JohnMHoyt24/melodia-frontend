@@ -216,6 +216,7 @@ export function Chat() {
                           id={artist.id}
                           name={artist.name}
                           genres={artist.genres}
+                          coverUrl={artist.cover_url}
                           reason={artist.reason}
                           actions={
                             <LibraryButton

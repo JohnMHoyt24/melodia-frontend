@@ -40,6 +40,7 @@ export function SimilarArtists({ artistId }: { artistId: string }) {
             <ArtistCard
               id={artist.id}
               name={artist.name}
+              coverUrl={artist.cover_url}
               layout="tile"
               meta={`${Math.round(artist.similarity * 100)}% match`}
             />
