@@ -1,5 +1,9 @@
 import { type FormEvent, useState } from "react";
 import { Navigate } from "react-router-dom";
+import { Button } from "../components/ui/Button";
+import { DisplayHeading } from "../components/ui/DisplayHeading";
+import { Equalizer } from "../components/ui/Equalizer";
+import { TextField } from "../components/ui/Field";
 import { useAuth } from "../lib/auth";
 
 type Mode = "sign-in" | "sign-up" | "reset";
@@ -51,7 +55,10 @@ export function AuthPage() {
   return (
     <section id="auth">
       <div className="hero">
-        <h1>Melodia</h1>
+        <DisplayHeading ghost="Listen" eyebrow="AI-powered music discovery">
+          Melodia
+        </DisplayHeading>
+        <Equalizer bars={12} className="hero-equalizer" />
         <p className="tagline">
           {mode === "sign-in" && "Sign in to continue your conversations."}
           {mode === "sign-up" && "Create an account to save your chats."}
@@ -60,20 +67,18 @@ export function AuthPage() {
       </div>
 
       <form onSubmit={handleSubmit} id="auth-form" className="card">
-        <label>
-          Email
-          <input
-            type="email"
-            required
-            autoComplete="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-          />
-        </label>
+        <TextField
+          label="Email"
+          type="email"
+          required
+          autoComplete="email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+        />
         {mode !== "reset" && (
-        <label>
-          Password
-          <input
+          <TextField
+            label="Password"
+            hint={mode === "sign-up" ? "At least 6 characters." : undefined}
             type="password"
             required
             minLength={6}
@@ -81,9 +86,8 @@ export function AuthPage() {
             value={password}
             onChange={(event) => setPassword(event.target.value)}
           />
-        </label>
         )}
-        <button type="submit" disabled={submitState === "loading"}>
+        <Button type="submit" size="lg" loading={submitState === "loading"}>
           {submitState === "loading"
             ? "Please wait..."
             : mode === "sign-in"
@@ -91,12 +95,18 @@ export function AuthPage() {
               : mode === "sign-up"
                 ? "Sign up"
                 : "Send reset link"}
-        </button>
+        </Button>
       </form>
 
-      {error && <p className="feedback feedback--error">{error}</p>}
+      {error && (
+        <p className="feedback feedback--error" role="alert">
+          {error}
+        </p>
+      )}
       {signedUp && (
-        <p className="feedback">Account created - check your email to confirm, then sign in.</p>
+        <p className="feedback" role="status">
+          Account created - check your email to confirm, then sign in.
+        </p>
       )}
 
       {resetSent && (

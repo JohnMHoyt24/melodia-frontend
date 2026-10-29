@@ -1,6 +1,11 @@
 import { type FormEvent, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { Pin, Plus, Send, X } from "lucide-react";
 import { LibraryButton } from "../components/LibraryButton";
+import { ArtistCard } from "../components/ui/ArtistCard";
+import { Button } from "../components/ui/Button";
+import { DisplayHeading } from "../components/ui/DisplayHeading";
+import { Equalizer } from "../components/ui/Equalizer";
 import { useLibrary } from "../lib/useLibrary";
 import { api, type ChatMessage, type ChatThreadSummary } from "../lib/api";
 
@@ -126,34 +131,36 @@ export function Chat() {
       <div className={`sidebar-slot${pinned ? " sidebar-slot--pinned" : ""}`}>
       <aside id="chat-sidebar" className={pinned ? "pinned" : undefined}>
         <div className="sidebar-header">
-          <button type="button" className="new-chat-button" onClick={() => navigate("/")}>
-            + New chat
-          </button>
-          <button
-            type="button"
-            className={`pin-button${pinned ? " pin-button--active" : ""}`}
+          <Button size="sm" onClick={() => navigate("/")}>
+            <Plus size={16} aria-hidden="true" />
+            New chat
+          </Button>
+          <Button
+            variant="icon"
+            className="pin-button"
             aria-pressed={pinned}
             aria-label={pinned ? "Unpin sidebar" : "Pin sidebar open"}
             title={pinned ? "Unpin sidebar" : "Pin sidebar open"}
             onClick={togglePinned}
           >
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
-              <path d="M16 3l5 5-2 1-3 3v4l-2 2-3-3-6 6-1-1 6-6-3-3 2-2h4l3-3 1-2z" />
-            </svg>
-          </button>
+            <Pin size={18} aria-hidden="true" />
+          </Button>
         </div>
-        <nav className="thread-list">
+        <nav className="thread-list" aria-label="Conversations">
           {threads.map((thread) => (
             <div key={thread.id} className={`thread-item${thread.id === threadId ? " thread-item--active" : ""}`}>
-              <Link to={`/chat/${thread.id}`}>{thread.title ?? "New chat"}</Link>
-              <button
-                type="button"
+              <Link to={`/chat/${thread.id}`} aria-current={thread.id === threadId ? "page" : undefined}>
+                {thread.title ?? "New chat"}
+              </Link>
+              <Button
+                variant="icon"
+                size="sm"
                 className="thread-delete"
-                aria-label="Delete thread"
+                aria-label={`Delete "${thread.title ?? "New chat"}"`}
                 onClick={() => handleDelete(thread.id)}
               >
-                ×
-              </button>
+                <X size={16} aria-hidden="true" />
+              </Button>
             </div>
           ))}
         </nav>
@@ -163,8 +170,14 @@ export function Chat() {
       <section id="chat-main">
         {messages.length === 0 && threadLoadState !== "loading" && (
           <div className="hero">
-            <h1>Melodia</h1>
-            <p className="tagline">AI-powered music discovery.</p>
+            <DisplayHeading ghost="Discover" eyebrow="AI-powered music discovery">
+              Find your next obsession
+            </DisplayHeading>
+            <p className="tagline">
+              Tell Melodia what you love. It learns from your library and finds the artists you
+              haven't met yet.
+            </p>
+            <Equalizer bars={12} className="hero-equalizer" />
             <div className="prompt-pills">
               {DEFAULT_PROMPTS.map((text) => (
                 <button
@@ -196,29 +209,22 @@ export function Chat() {
               <div key={message.id} className={`message message--${message.role}`}>
                 <p className="message-content">{message.content}</p>
                 {message.recommended_artists && message.recommended_artists.length > 0 && (
-                  <ul className="recommend-results">
+                  <ul className="artist-grid">
                     {message.recommended_artists.map((artist) => (
-                      <li key={artist.id} className="recommendation card">
-                        <div className="recommendation-header">
-                          <Link to={`/artists/${artist.id}`} className="recommendation-name">
-                            {artist.name}
-                          </Link>
-                          <LibraryButton
-                            inLibrary={library.ids.has(artist.id)}
-                            onAdd={() => library.add(artist.id)}
-                            onRemove={() => library.remove(artist.id)}
-                          />
-                        </div>
-                        {artist.genres.length > 0 && (
-                          <div className="genre-tags">
-                            {artist.genres.map((genre) => (
-                              <span key={genre} className="genre-tag">
-                                {genre}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                        <p className="reason">{artist.reason}</p>
+                      <li key={artist.id}>
+                        <ArtistCard
+                          id={artist.id}
+                          name={artist.name}
+                          genres={artist.genres}
+                          reason={artist.reason}
+                          actions={
+                            <LibraryButton
+                              inLibrary={library.ids.has(artist.id)}
+                              onAdd={() => library.add(artist.id)}
+                              onRemove={() => library.remove(artist.id)}
+                            />
+                          }
+                        />
                       </li>
                     ))}
                   </ul>
@@ -242,7 +248,12 @@ export function Chat() {
                 )}
               </div>
             ))}
-            {sendState === "sending" && <p className="feedback">Thinking...</p>}
+            {sendState === "sending" && (
+              <p className="feedback thinking" role="status">
+                <Equalizer />
+                Melodia is listening...
+              </p>
+            )}
           </div>
         )}
 
@@ -255,11 +266,17 @@ export function Chat() {
             value={prompt}
             onChange={(event) => setPrompt(event.target.value)}
             aria-label="Message"
+            className="input prompt-input"
             rows={3}
           />
-          <button type="submit" disabled={sendState === "sending"}>
-            {sendState === "sending" ? "Thinking..." : "Send"}
-          </button>
+          <Button type="submit" loading={sendState === "sending"}>
+            {sendState === "sending" ? "Listening..." : (
+              <>
+                Ask Melodia
+                <Send size={16} aria-hidden="true" />
+              </>
+            )}
+          </Button>
         </form>
       </section>
     </div>

@@ -1,38 +1,86 @@
+@import "@fontsource-variable/inter";
+@import "@fontsource/poppins/700.css";
+@import "@fontsource/poppins/900.css";
+
+/* "Neon Stage" is the default theme: hot-pink, gold and violet spotlights over a plum stage.
+   Light is opt-in via data-theme="light".
+   Contrast notes are worst-case WCAG ratios: on --surface, or at the pink spotlight's brightest point. */
 :root {
-  --text: #4c4560;
-  --text-muted: #756e8a;
-  --text-h: #1c1730;
-  --bg: #faf9fd;
-  --surface: #ffffff;
-  --surface-hover: #fbf8ff;
-  --border: #e6e1f2;
-  --code-bg: #f4f3ec;
+  --text: #eadff2; /* 7.1:1 */
+  --text-muted: #cdbcda; /* 5.2:1 */
+  --text-h: #ffffff;
+  --text-on-accent: #ffffff; /* >= 4.9:1 on every --gradient stop */
+  --bg-top: #2a0f3d;
+  --bg: #1f0d2c; /* page base; also the browser chrome colour */
+  --bg-gradient:
+    radial-gradient(55% 45% at 50% -8%, rgba(255, 46, 136, 0.35), transparent 70%),
+    radial-gradient(30% 35% at 92% 6%, rgba(255, 194, 61, 0.28), transparent 70%),
+    radial-gradient(30% 40% at 4% 18%, rgba(155, 60, 255, 0.3), transparent 70%),
+    linear-gradient(180deg, var(--bg-top) 0%, var(--bg) 55%);
+  --surface: #2c1540;
+  --surface-2: #371b4f;
+  --surface-hover: #3d1f57;
+  --surface-solid: #2c1540; /* panels that overlay content (sidebar, menus) */
+  --border: #45265c;
+  --border-strong: #8a6aa3; /* 3.6:1 for input borders */
+  --glass-blur: none;
+  --code-bg: #371b4f;
 
-  --accent: #7c3aed;
-  --accent-2: #c026d3;
-  --accent-3: #f97316;
-  --accent-bg: rgba(124, 58, 237, 0.08);
-  --accent-border: rgba(124, 58, 237, 0.35);
-  --gradient: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 55%, var(--accent-3) 100%);
-  --gradient-soft: linear-gradient(135deg, rgba(124, 58, 237, 0.12), rgba(192, 38, 211, 0.1) 55%, rgba(249, 115, 22, 0.1));
+  --accent: #ff8cc0; /* neon pink for links and active states: 7.6:1 */
+  --accent-2: #ffd36e; /* stage gold for eyebrows and highlights: 11.5:1 */
+  --accent-3: #b98aff; /* violet */
+  --accent-bg: rgba(255, 46, 136, 0.14);
+  --accent-border: rgba(255, 140, 192, 0.5);
+  --gold-bg: rgba(255, 194, 61, 0.14);
+  /* Fill gradient for buttons, user bubbles and art. */
+  --gradient: linear-gradient(120deg, #d61f74 0%, #c2410c 100%);
+  --gradient-neon: linear-gradient(0deg, #ff2e88, #ffc23d); /* decorative only (equalizer, rings) */
+  --gradient-soft: linear-gradient(135deg, rgba(255, 46, 136, 0.18), rgba(255, 194, 61, 0.1));
+  --overlay-scrim: linear-gradient(180deg, rgba(26, 10, 38, 0) 0%, rgba(26, 10, 38, 0.6) 55%, rgba(26, 10, 38, 0.94) 100%);
+  --blob-a: rgba(255, 46, 136, 0.16);
+  --blob-b: rgba(155, 60, 255, 0.2);
 
-  --status-online: #1e8e3e;
-  --status-offline: #c62828;
+  --status-online: #6ee7a0;
+  --status-offline: #ffb4b4; /* 9.7:1 */
   --status-checking: var(--text-muted);
 
-  --shadow:
-    rgba(23, 15, 46, 0.08) 0 10px 15px -3px, rgba(23, 15, 46, 0.05) 0 4px 6px -2px;
-  --shadow-glow: 0 12px 30px -10px rgba(124, 58, 237, 0.35);
+  --shadow-1: 0 1px 2px rgba(15, 4, 24, 0.4);
+  --shadow-2: 0 12px 28px -12px rgba(15, 4, 24, 0.7);
+  --shadow-3: 0 24px 48px -12px rgba(15, 4, 24, 0.8);
+  --glow: 0 10px 28px -8px rgba(255, 46, 136, 0.7);
+  --shadow: var(--shadow-2);
+  --shadow-glow: var(--glow);
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 999px;
+
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-lg: 1.125rem;
+  --fs-h3: clamp(1.1rem, 1rem + 0.4vw, 1.3rem);
+  --fs-h2: clamp(1.35rem, 1.1rem + 1vw, 1.75rem);
+  --fs-h1: clamp(2.25rem, 1.5rem + 3vw, 3.75rem);
+  --fs-display: clamp(2.75rem, 1rem + 7vw, 6.5rem);
 
   --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --sans: "Inter Variable", system-ui, "Segoe UI", Roboto, sans-serif;
+  --heading: "Poppins", var(--sans);
   --mono: ui-monospace, Consolas, monospace;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
+  font: 17px/1.55 var(--sans);
+  color-scheme: dark;
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
@@ -45,30 +93,45 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #c7c2d9;
-    --text-muted: #948da9;
-    --text-h: #f5f2fb;
-    --bg: #0f0c1a;
-    --surface: #1a1530;
-    --surface-hover: #201a3a;
-    --border: #2c2547;
-    --code-bg: #1f2028;
+/* Daylight version of the stage: cream ground, same pink/gold/violet lights. */
+:root[data-theme="light"] {
+  --text: #4a3446; /* 10.7:1 */
+  --text-muted: #6e5468; /* 6.2:1 */
+  --text-h: #24112f;
+  --bg-top: #ffe9f2;
+  --bg: #fff8f3;
+  --bg-gradient:
+    radial-gradient(55% 45% at 50% -8%, rgba(255, 46, 136, 0.18), transparent 70%),
+    radial-gradient(30% 35% at 92% 6%, rgba(255, 194, 61, 0.22), transparent 70%),
+    radial-gradient(30% 40% at 4% 18%, rgba(155, 60, 255, 0.12), transparent 70%),
+    linear-gradient(180deg, var(--bg-top) 0%, var(--bg) 55%);
+  --surface: #ffffff;
+  --surface-2: #fdf3f6;
+  --surface-hover: #fbe9f0;
+  --surface-solid: #ffffff;
+  --border: #f0dde6;
+  --border-strong: #a07e94; /* 3.6:1 */
+  --code-bg: #fdf3f6;
 
-    --accent: #a78bfa;
-    --accent-2: #e879f9;
-    --accent-3: #fb923c;
-    --accent-bg: rgba(167, 139, 250, 0.14);
-    --accent-border: rgba(167, 139, 250, 0.4);
+  --accent: #b4235f; /* 5.8:1 */
+  --accent-2: #9a3412; /* gold reads too pale on cream; burnt orange instead */
+  --accent-3: #6d28d9;
+  --accent-bg: rgba(214, 31, 116, 0.08);
+  --accent-border: rgba(180, 35, 95, 0.4);
+  --gold-bg: rgba(194, 65, 12, 0.08);
+  --overlay-scrim: linear-gradient(180deg, rgba(36, 17, 47, 0) 0%, rgba(36, 17, 47, 0.55) 55%, rgba(36, 17, 47, 0.9) 100%);
+  --blob-a: rgba(255, 46, 136, 0.08);
+  --blob-b: rgba(255, 194, 61, 0.1);
 
-    --status-online: #4ade80;
-    --status-offline: #f87171;
+  --status-online: #1e8e3e;
+  --status-offline: #b91c1c; /* 6.5:1 */
 
-    --shadow:
-      rgba(0, 0, 0, 0.5) 0 10px 15px -3px, rgba(0, 0, 0, 0.3) 0 4px 6px -2px;
-    --shadow-glow: 0 12px 34px -8px rgba(167, 139, 250, 0.45);
-  }
+  --shadow-1: 0 1px 2px rgba(60, 20, 50, 0.06);
+  --shadow-2: 0 12px 24px -14px rgba(120, 30, 80, 0.3);
+  --shadow-3: 0 24px 48px -12px rgba(120, 30, 80, 0.25);
+  --glow: 0 10px 26px -10px rgba(214, 31, 116, 0.55);
+
+  color-scheme: light;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -89,7 +152,9 @@
 body {
   margin: 0;
   min-height: 100svh;
-  background: var(--bg);
+  background: var(--bg-gradient);
+  background-color: var(--bg);
+  background-attachment: fixed;
   overflow-x: hidden;
 }
 
@@ -108,7 +173,7 @@ body::before {
   left: -10%;
   width: 60vw;
   height: 60vw;
-  background: radial-gradient(circle, rgba(124, 58, 237, 0.16), transparent 70%);
+  background: radial-gradient(circle, var(--blob-a), transparent 70%);
 }
 
 body::after {
@@ -116,17 +181,7 @@ body::after {
   right: -15%;
   width: 65vw;
   height: 65vw;
-  background: radial-gradient(circle, rgba(249, 115, 22, 0.13), transparent 70%);
-}
-
-@media (prefers-color-scheme: dark) {
-  body::before {
-    background: radial-gradient(circle, rgba(167, 139, 250, 0.22), transparent 70%);
-  }
-
-  body::after {
-    background: radial-gradient(circle, rgba(232, 121, 249, 0.16), transparent 70%);
-  }
+  background: radial-gradient(circle, var(--blob-b), transparent 70%);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -169,37 +224,33 @@ body::after {
 }
 
 h1,
-h2 {
+h2,
+h3 {
   font-family: var(--heading);
   font-weight: 700;
   color: var(--text-h);
+  text-wrap: balance;
 }
 
 h1 {
-  font-size: 60px;
-  line-height: 1.15;
-  letter-spacing: -1.8px;
-  margin: 32px 0 8px;
-  background: var(--gradient);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: var(--text-h);
-  -webkit-text-fill-color: transparent;
-
-  @media (max-width: 1024px) {
-    font-size: 38px;
-    margin: 20px 0 8px;
-  }
+  font-size: var(--fs-h1);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: var(--space-6) 0 var(--space-2);
 }
 
 h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
+  font-size: var(--fs-h2);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin: 0 0 var(--space-2);
+}
+
+h3 {
+  font-size: var(--fs-h3);
+  line-height: 1.25;
+  margin: 0;
 }
 
 p {
@@ -222,41 +273,35 @@ a:hover {
 }
 
 :focus-visible {
-  outline: 3px solid var(--accent);
+  outline: 3px solid var(--accent-2);
   outline-offset: 3px;
   border-radius: 4px;
 }
 
+/* Neutral reset: visual styles come from .btn variants or a component's own class. */
 button {
   font: inherit;
-  font-weight: 600;
+  color: inherit;
   cursor: pointer;
   border: none;
-  border-radius: 999px;
-  padding: 12px 28px;
-  color: #fff;
-  background: var(--gradient);
-  background-size: 160% 160%;
-  background-position: 0% 50%;
-  box-shadow: var(--shadow-glow);
-  transition: transform var(--transition), box-shadow var(--transition),
-    background-position var(--transition), opacity var(--transition);
-}
-
-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  background-position: 100% 50%;
-  box-shadow: 0 16px 34px -10px rgba(124, 58, 237, 0.45);
-}
-
-button:active:not(:disabled) {
-  transform: translateY(0);
+  background: none;
+  padding: 0;
 }
 
 button:disabled {
-  cursor: progress;
-  opacity: 0.65;
-  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 code {
@@ -268,4 +313,13 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+
+@media (forced-colors: active) {
+  .btn,
+  .card,
+  .tag,
+  .input {
+    border: 1px solid CanvasText;
+  }
 }

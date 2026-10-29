@@ -1,5 +1,7 @@
 import { type FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Button } from "../components/ui/Button";
+import { TextField } from "../components/ui/Field";
 import { useAuth } from "../lib/auth";
 
 export function ResetPasswordPage() {
@@ -55,35 +57,40 @@ export function ResetPasswordPage() {
       </div>
 
       <form onSubmit={handleSubmit} id="auth-form" className="card">
-        <label>
-          New password
-          <input
-            type="password"
-            required
-            minLength={6}
-            autoComplete="new-password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </label>
-        <label>
-          Confirm new password
-          <input
-            type="password"
-            required
-            minLength={6}
-            autoComplete="new-password"
-            value={confirm}
-            onChange={(event) => setConfirm(event.target.value)}
-          />
-        </label>
-        <button type="submit" disabled={saving || done}>
+        <TextField
+          label="New password"
+          hint="At least 6 characters."
+          type="password"
+          required
+          minLength={6}
+          autoComplete="new-password"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+        />
+        <TextField
+          label="Confirm new password"
+          type="password"
+          required
+          minLength={6}
+          autoComplete="new-password"
+          value={confirm}
+          onChange={(event) => setConfirm(event.target.value)}
+        />
+        <Button type="submit" size="lg" loading={saving} disabled={done}>
           {saving ? "Saving..." : "Update password"}
-        </button>
+        </Button>
       </form>
 
-      {error && <p className="feedback feedback--error">{error}</p>}
-      {done && <p className="feedback">Password updated. Taking you to your chats...</p>}
+      {error && (
+        <p className="feedback feedback--error" role="alert">
+          {error}
+        </p>
+      )}
+      {done && (
+        <p className="feedback" role="status">
+          Password updated. Taking you to your chats...
+        </p>
+      )}
     </section>
   );
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { api, type SimilarArtist } from "../lib/api";
+import { ArtistCard } from "./ui/ArtistCard";
 
 type LoadState = "loading" | "done" | "error";
 
@@ -36,11 +36,13 @@ export function SimilarArtists({ artistId }: { artistId: string }) {
       <h2>Similar in your library</h2>
       <ul className="similar-strip">
         {artists.map((artist) => (
-          <li key={artist.id} className="similar-card card">
-            <Link to={`/artists/${artist.id}`} className="recommendation-name">
-              {artist.name}
-            </Link>
-            <span className="similar-match">{Math.round(artist.similarity * 100)}% match</span>
+          <li key={artist.id}>
+            <ArtistCard
+              id={artist.id}
+              name={artist.name}
+              layout="tile"
+              meta={`${Math.round(artist.similarity * 100)}% match`}
+            />
           </li>
         ))}
       </ul>

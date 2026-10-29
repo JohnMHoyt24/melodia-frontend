@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Check, Plus, RotateCcw } from "lucide-react";
+import { Button } from "./ui/Button";
 
 interface Props {
   inLibrary: boolean;
@@ -22,16 +24,18 @@ export function LibraryButton({ inLibrary, onAdd, onRemove }: Props) {
     }
   }
 
+  const Icon = failed ? RotateCcw : inLibrary ? Check : Plus;
   return (
-    <button
-      type="button"
-      className={`library-button${inLibrary ? " library-button--added" : ""}`}
+    <Button
+      variant={inLibrary ? "secondary" : "primary"}
+      size="sm"
       onClick={toggle}
       disabled={pending}
       aria-pressed={inLibrary}
       title={failed ? "Something went wrong - try again" : undefined}
     >
-      {failed ? "Try again" : inLibrary ? "✓ In library" : "+ Add to library"}
-    </button>
+      <Icon size={16} aria-hidden="true" />
+      {failed ? "Try again" : inLibrary ? "In library" : "Add to library"}
+    </Button>
   );
 }

@@ -1,5 +1,6 @@
 import { type KeyboardEvent, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { ChevronDown, Library, LogOut, UserRound } from "lucide-react";
 import { useAuth } from "../lib/auth";
 
 export function UserBar() {
@@ -58,23 +59,16 @@ export function UserBar() {
           <span className="avatar avatar--initial">{initial}</span>
         )}
         <span className="user-bar-name">{name}</span>
-        <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" className="user-bar-caret">
-          <path
-            d="M2 4l4 4 4-4"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <ChevronDown size={16} aria-hidden="true" className="user-bar-caret" />
       </button>
       {open && (
         <div className="user-menu" role="menu">
           <Link to="/library" role="menuitem" onClick={() => setOpen(false)}>
+            <Library size={16} aria-hidden="true" />
             My library
           </Link>
           <Link to="/profile" role="menuitem" onClick={() => setOpen(false)}>
+            <UserRound size={16} aria-hidden="true" />
             Edit profile
           </Link>
           <button
@@ -85,6 +79,7 @@ export function UserBar() {
               signOut();
             }}
           >
+            <LogOut size={16} aria-hidden="true" />
             Sign out
           </button>
         </div>

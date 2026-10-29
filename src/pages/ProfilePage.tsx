@@ -1,5 +1,8 @@
 import { type ChangeEvent, type FormEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "../components/ui/Button";
+import { TextAreaField, TextField } from "../components/ui/Field";
 import { AVATAR_EXTENSIONS, AVATAR_MAX_BYTES, type Profile, useAuth } from "../lib/auth";
 
 type SaveState = "idle" | "saving" | "saved" | "error";
@@ -82,25 +85,21 @@ export function ProfilePage() {
   return (
     <div id="profile">
       <Link to="/" className="back-link">
-        ← Back to chat
+        <ArrowLeft size={16} aria-hidden="true" />
+        Back to chat
       </Link>
       <h1>Your profile</h1>
       <p className="tagline">Tell Melodia a little about yourself.</p>
 
       <form id="profile-form" className="card" onSubmit={handleSubmit}>
-        <label>
-          Email
-          <input type="email" value={user?.email ?? ""} disabled />
-        </label>
-        <label>
-          Display name
-          <input
-            type="text"
-            value={form.displayName}
-            maxLength={60}
-            onChange={(event) => setField("displayName", event.target.value)}
-          />
-        </label>
+        <TextField label="Email" type="email" value={user?.email ?? ""} disabled />
+        <TextField
+          label="Display name"
+          type="text"
+          value={form.displayName}
+          maxLength={60}
+          onChange={(event) => setField("displayName", event.target.value)}
+        />
 
         <div className="avatar-field">
           {shownAvatar ? (
@@ -133,32 +132,37 @@ export function ProfilePage() {
           </div>
         </div>
 
-        <label>
-          Favorite genres
-          <input
-            type="text"
-            placeholder="indie rock, jazz, synthwave"
-            value={form.favoriteGenres}
-            maxLength={200}
-            onChange={(event) => setField("favoriteGenres", event.target.value)}
-          />
-        </label>
-        <label>
-          Bio
-          <textarea
-            rows={4}
-            maxLength={500}
-            value={form.bio}
-            onChange={(event) => setField("bio", event.target.value)}
-          />
-        </label>
+        <TextField
+          label="Favorite genres"
+          hint="Separate genres with commas."
+          type="text"
+          placeholder="indie rock, jazz, synthwave"
+          value={form.favoriteGenres}
+          maxLength={200}
+          onChange={(event) => setField("favoriteGenres", event.target.value)}
+        />
+        <TextAreaField
+          label="Bio"
+          rows={4}
+          maxLength={500}
+          value={form.bio}
+          onChange={(event) => setField("bio", event.target.value)}
+        />
 
-        {error && <p className="feedback feedback--error">{error}</p>}
-        {saveState === "saved" && <p className="feedback">Profile saved.</p>}
+        {error && (
+          <p className="feedback feedback--error" role="alert">
+            {error}
+          </p>
+        )}
+        {saveState === "saved" && (
+          <p className="feedback" role="status">
+            Profile saved.
+          </p>
+        )}
 
-        <button type="submit" disabled={saveState === "saving"}>
+        <Button type="submit" loading={saveState === "saving"}>
           {saveState === "saving" ? "Saving..." : "Save profile"}
-        </button>
+        </Button>
       </form>
     </div>
   );

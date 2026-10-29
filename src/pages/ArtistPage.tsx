@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { CharacteristicBars } from "../components/CharacteristicBars";
+import { Button } from "../components/ui/Button";
+import { DisplayHeading } from "../components/ui/DisplayHeading";
+import { GeneratedArt } from "../components/ui/GeneratedArt";
+import { TagList } from "../components/ui/TagList";
 import { LibraryButton } from "../components/LibraryButton";
 import { SimilarArtists } from "../components/SimilarArtists";
 import { api, type AnalysisStatus, type ArtistDetail } from "../lib/api";
@@ -114,12 +119,17 @@ export function ArtistPage() {
       .catch(() => setAlbumsState("error"));
   }
 
+  const backLink = (
+    <Link to="/" className="back-link">
+      <ArrowLeft size={16} aria-hidden="true" />
+      Back to Melodia
+    </Link>
+  );
+
   if (state === "loading") {
     return (
       <section id="artist">
-        <Link to="/" className="back-link">
-          ← Back to Melodia
-        </Link>
+        {backLink}
         <p className="feedback">Loading artist...</p>
       </section>
     );
@@ -127,30 +137,21 @@ export function ArtistPage() {
   if (state === "error" || !artist) {
     return (
       <section id="artist">
-        <Link to="/" className="back-link">
-          ← Back to Melodia
-        </Link>
+        {backLink}
         <p className="feedback feedback--error">Artist not found.</p>
       </section>
     );
   }
 
+  const genreNames = artist.genres.map((genre) => genre.name);
+
   return (
     <section id="artist">
-      <Link to="/" className="back-link">
-        ← Back to Melodia
-      </Link>
-      <div className="hero">
-        <h1>{artist.name}</h1>
-        {artist.genres.length > 0 && (
-          <div className="genre-tags">
-            {artist.genres.map((genre) => (
-              <span key={genre.name} className="genre-tag">
-                {genre.name}
-              </span>
-            ))}
-          </div>
-        )}
+      {backLink}
+      <div className="hero artist-hero">
+        <GeneratedArt name={artist.name} className="artist-hero-art" />
+        <DisplayHeading eyebrow={genreNames[0]}>{artist.name}</DisplayHeading>
+        <TagList tags={genreNames} />
         {library.signedIn && (
           <div className="artist-actions">
             <LibraryButton
@@ -177,9 +178,7 @@ export function ArtistPage() {
           ) : (
             <>
               <p className="feedback feedback--error">Couldn't analyze this artist.</p>
-              <button type="button" onClick={retryAnalysis}>
-                Try again
-              </button>
+              <Button onClick={retryAnalysis}>Try again</Button>
             </>
           )}
         </div>
@@ -191,9 +190,9 @@ export function ArtistPage() {
             This artist was just discovered and hasn't had its discography pulled in
             yet.
           </p>
-          <button type="button" onClick={loadAlbums} disabled={albumsState === "loading"}>
+          <Button onClick={loadAlbums} loading={albumsState === "loading"}>
             {albumsState === "loading" ? "Loading albums..." : "Load albums"}
-          </button>
+          </Button>
           {albumsState === "error" && (
             <p className="feedback feedback--error">Couldn't load albums. Try again?</p>
           )}

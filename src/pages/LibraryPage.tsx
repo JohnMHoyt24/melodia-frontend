@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import { ArtistCard } from "../components/ui/ArtistCard";
+import { Button } from "../components/ui/Button";
+import { DisplayHeading } from "../components/ui/DisplayHeading";
 import { api, type LibraryArtist } from "../lib/api";
 
 type LoadState = "loading" | "done" | "error";
@@ -26,10 +30,13 @@ export function LibraryPage() {
   return (
     <section id="library">
       <Link to="/" className="back-link">
-        ← Back to Melodia
+        <ArrowLeft size={16} aria-hidden="true" />
+        Back to Melodia
       </Link>
       <div className="hero">
-        <h1>My library</h1>
+        <DisplayHeading ghost="Library" eyebrow="Your collection">
+          My library
+        </DisplayHeading>
         <p className="tagline">Artists you've saved. They shape your recommendations.</p>
       </div>
 
@@ -44,33 +51,25 @@ export function LibraryPage() {
         </p>
       )}
 
-      <ul className="library-list">
+      <ul className="artist-grid">
         {artists.map((artist) => (
-          <li key={artist.id} className="library-item card">
-            <div className="recommendation-header">
-              <Link to={`/artists/${artist.id}`} className="recommendation-name">
-                {artist.name}
-              </Link>
-              <button
-                type="button"
-                className="library-button library-button--added"
-                onClick={() => remove(artist.id)}
-              >
-                Remove
-              </button>
-            </div>
-            {artist.genres.length > 0 && (
-              <div className="genre-tags">
-                {artist.genres.slice(0, 6).map((genre) => (
-                  <span key={genre} className="genre-tag">
-                    {genre}
-                  </span>
-                ))}
-              </div>
-            )}
-            <p className="library-added">
-              Added {new Date(artist.added_at).toLocaleDateString()}
-            </p>
+          <li key={artist.id}>
+            <ArtistCard
+              id={artist.id}
+              name={artist.name}
+              genres={artist.genres}
+              meta={`Added ${new Date(artist.added_at).toLocaleDateString()}`}
+              actions={
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  aria-label={`Remove ${artist.name} from library`}
+                  onClick={() => remove(artist.id)}
+                >
+                  Remove
+                </Button>
+              }
+            />
           </li>
         ))}
       </ul>
